@@ -12,7 +12,7 @@ export const createStatus =
       const userId =
         req.user;
 
-      const { text, taggedUsers, textcolor} =
+      const { text, taggedUsers, textcolor, size } =
         req.body;
 
       let media = {};
@@ -93,7 +93,8 @@ export const createStatus =
           taggedUsers:
             parsedTaggedUsers,
           textPosition: textPosition, 
-          textcolor: textcolor
+          textcolor: textcolor,
+          size:size
         });
 
       for (
@@ -647,7 +648,7 @@ export const getStoryById =
 
       if (!story) {
 
-        return res.status(404).json({
+        return res.json({
           success: false,
           message:
             "Story not found"

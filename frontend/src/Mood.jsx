@@ -78,7 +78,8 @@ const Mood = () => {
                     setMoods([res.data.mood]);
 
                 } else {
-                    toast.error("something went wrong")
+                    toast.error(res.data.message);
+                    nav('/feed');
                 }
 
             } catch (error) {

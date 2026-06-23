@@ -62,6 +62,10 @@ const statusSchema =
         type: Date,
         required: true,
       },
+      size:{
+        type: Number,
+        default:25
+      },
       textPosition: {
         x: {
           type: Number,

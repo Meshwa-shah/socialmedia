@@ -547,7 +547,6 @@ const StoryViewer = () => {
                             <h1
                                 className={`
     absolute
-    text-3xl
     font-bold
     md:text-6xl
   `}
@@ -557,7 +556,10 @@ const StoryViewer = () => {
                                     top:
                                         `${story.textPosition?.y}px`,
                                     color:
-                                        `${story.textcolor}`
+                                        `${story.textcolor}`,
+                                    fontSize:
+
+                                    `${story.size}px`
                                 }}
 
                             >
@@ -612,7 +614,7 @@ const StoryViewer = () => {
             >
 
                 <ChevronLeft
-                    size={40}
+                    size={25}
                 />
 
             </button>
@@ -648,7 +650,7 @@ const StoryViewer = () => {
             >
 
                 <ChevronRight
-                    size={40}
+                    size={25}
                 />
 
             </button>

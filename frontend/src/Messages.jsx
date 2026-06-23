@@ -104,7 +104,7 @@ const Messages = () => {
         bg-[#09090B]
         text-white
         px-4
-        py-6
+        py-6 
       "
     >
 
@@ -143,7 +143,7 @@ const Messages = () => {
 
           ) : (
 
-            <div className="space-y-4">
+            <div className="space-y-4 ">
 
               {
                 conversations.map(
@@ -182,7 +182,7 @@ const Messages = () => {
                           border-white/5
                           cursor-pointer
                           hover:border-violet-500
-                          transition
+                          transition                                                              
                         "
                       >
 
@@ -206,6 +206,8 @@ const Messages = () => {
     flex
     items-center
     justify-between
+    overflow-x-hidden
+
   "
                         >
 

@@ -2,7 +2,7 @@ import {
     useEffect,
     useState,
 } from "react";
-
+import { formatDistanceToNow } from "date-fns";
 import API from "./axios";
 import socket from "./socket/socket";
 import Cookies from 'js-cookie';
@@ -192,10 +192,10 @@ const CommentModal = ({
                                         {comment.text}
 
                                     </p>
+                                    <div className="flex gap-1.5">
                                     {
                                         comment.user?._id ===
                                         currentUserId && (
-
                                             <button
                                                 onClick={() =>
                                                     deleteComment(
@@ -212,7 +212,7 @@ const CommentModal = ({
 
                                         )
                                     }
-
+                                <p className="text-violet-300 text-sm">{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}</p></div>
                                 </div>
 
                             </div>

@@ -22,10 +22,11 @@ const CreateStatus = () => {
   const [media, setMedia] =
     useState(null);
 
-    const dragRef =
-  useRef(null);
+  const dragRef =
+    useRef(null);
 
-   const [color, setcolor] = useState("white");
+  const [color, setcolor] = useState("white");
+  const [size, setsize] = useState(25);
 
   const [preview, setPreview] =
     useState("");
@@ -58,7 +59,7 @@ const CreateStatus = () => {
       gradients[0]
     );
 
-  function add(user, name){
+  function add(user, name) {
     addTaggedUser(user);
     setSearch(name);
   }
@@ -124,10 +125,16 @@ const CreateStatus = () => {
           text
         );
 
-         formData.append(
+        formData.append(
           "textcolor",
           color
         );
+
+        formData.append(
+          "size",
+          size
+        );
+
 
         formData.append(
           "taggedUsers",
@@ -168,7 +175,7 @@ const CreateStatus = () => {
 
           nav("/feed");
 
-        }else{
+        } else {
           toast.error(res.data.message);
         }
 
@@ -285,28 +292,27 @@ const CreateStatus = () => {
           {/* DRAGGABLE TEXT */}
 
           <Draggable
-  nodeRef={dragRef}
-  position={position}
-  onStop={(e, data) =>
-    setPosition({
-      x: data.x,
-      y: data.y
-    })
-  }
->
+            nodeRef={dragRef}
+            position={position}
+            onStop={(e, data) =>
+              setPosition({
+                x: data.x,
+                y: data.y
+              })
+            }
+          >
 
             <div
-             ref={dragRef}
+              ref={dragRef}
               className="
                 absolute
                 text-white
-                text-3xl
                 font-bold
                 cursor-move
                 text-center
                 px-4
               "
-              style={{color: `${color}`}}
+              style={{ color: `${color}`, fontSize: `${size}px` }}
             >
 
               {
@@ -458,7 +464,10 @@ const CreateStatus = () => {
           )
         }
         <p className="mt-2 text-xl">Select text color</p>
-        <input type="color" name="" id="" value={color} className="rounded-2xl" onChange={(e) => setcolor(e.target.value)} className="mt-1 w-10 h-10"/>
+        <input type="color" name="" id="" value={color} className="rounded-2xl" onChange={(e) => setcolor(e.target.value)} className="mt-1 w-10 h-10" />
+
+        <p className="mt-2 text-xl">Select text size</p>
+        <input type="number" name="" id="" value={size} className="rounded-2xl" onChange={(e) => setsize(e.target.value)} className="mt-1 w-10 h-10" />
 
         {/* POST BUTTON */}
 

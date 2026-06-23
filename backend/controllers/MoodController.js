@@ -292,7 +292,7 @@ export const getMoodHistory =
 
       if (!mood) {
 
-        return res.status(404).json({
+        return res.json({
           success: false,
           message:
             "Mood not found"
