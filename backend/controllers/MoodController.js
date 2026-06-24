@@ -3,6 +3,7 @@ import User from "../models/Users.js";
 import Notification from "../models/Notification.js";
 import { getIO, users } from "../socket/socket.js";
 // CREATE MOOD
+import { sendPush } from "../utils/sendnotification.js";
 
 export const createMood =
   async (req, res) => {
@@ -187,7 +188,7 @@ export const reactToMood =
               "sender",
               "username profilePic"
             );
-
+        
           const io =
             getIO();
 

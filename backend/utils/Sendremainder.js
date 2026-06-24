@@ -1,47 +1,114 @@
 import cron from "node-cron";
-
 import User from "../models/Users.js";
-
 import { sendPush } from "./sendnotification.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
-cron.schedule("0 */6 * * *", async () => {
+// FOR TESTING:
+// runs every minute
+// change to "0 11 * * *" for production
 
-  console.log("Checking inactive users");
+cron.schedule(
+  "0 */8 * * *",
+  async () => {
 
-  const oneDayAgo = new Date(
-    Date.now() - 24 * 60 * 60 * 1000
-  );
+    try {
 
-  const inactiveUsers = await User.find({
-    lastSeen: { $lt: oneDayAgo },
-  });
+      console.log(
+        "Checking inactive users..."
+      );
 
-  for (const user of inactiveUsers) {
-
-    // avoid spam
-    if (
-      user.lastReminderSent &&
-      Date.now() -
+      const oneDayAgo =
         new Date(
-          user.lastReminderSent
-        ).getTime() <
-        24 * 60 * 60 * 1000
-    ) {
-      continue;
+          Date.now() -
+            24 *
+              60 *
+              60 *
+              1000
+        );
+
+      // users inactive for 24h
+      // OR users who never had lastSeen
+      const inactiveUsers =
+        await User.find({
+          $or: [
+            {
+              lastSeen: null
+            },
+            {
+              lastSeen: {
+                $lt:
+                  oneDayAgo
+              }
+            }
+          ]
+        });
+
+      console.log(
+        "Inactive users found:",
+        inactiveUsers.length
+      );
+
+      for (const user of inactiveUsers) {
+
+        try {
+
+          // prevent sending more than once in 24h
+          if (
+            user.lastReminderSent &&
+            Date.now() -
+              new Date(
+                user.lastReminderSent
+              ).getTime() <
+              24 *
+                60 *
+                60 *
+                1000
+          ) {
+
+            console.log(
+              `Skipping ${user.username} (already reminded)`
+            );
+
+            continue;
+
+          }
+
+          await sendPush(
+            user.fcmToken,
+            "We miss you ❤️",
+            "Come back and check new posts!"
+          );
+
+          console.log(
+            `notification sent to ${user.email}`
+          );
+
+          user.lastReminderSent =
+            new Date();
+
+          await user.save();
+
+        } catch (error) {
+
+          console.log(
+            `Failed for ${user.email}:`,
+            error.message
+          );
+
+        }
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "Cron failed:",
+        error.message
+      );
+
     }
 
-    await sendPush(
-      user.fcmToken,
-       "We miss you ❤️",
-  ` Come back and check new posts and stories!`
-    );
-
-    user.lastReminderSent = new Date();
-
-    await user.save();
   }
-});
-
+);

@@ -176,7 +176,6 @@ const ChatRoom = () => {
   // SEND MESSAGE
   const sendMessage =
     async () => {
-
       if (
         !text.trim()
       ) return;
@@ -212,7 +211,7 @@ const ChatRoom = () => {
         console.log(error);
 
       }
-      finally{
+      finally {
         setdisabled(false)
       }
 

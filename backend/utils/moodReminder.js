@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 cron.schedule(
-  "0 */12 * * *",
+  "0 10 * * *",
   async () => {
     console.log("checking moods");
 
