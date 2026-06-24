@@ -3,6 +3,7 @@ import Post from "../models/Post.js";
 import cloudinary from "../config/cloudinary.js";
 import Notification from "../models/Notification.js";
 import { getIO } from "../socket/socket.js";
+import { sendPush } from "../utils/sendnotification.js";
 
 export const getMyProfile =
   async (req, res) => {
@@ -278,6 +279,12 @@ export const toggleFollowUser =
         "new_notification",
         populatedNotification
       );
+      const sender = await User.findById(userId);
+      const receiver = await User.findById(currentUserId);
+      await sendPush(
+        receiver.fcmToken,
+        `${sender.username} has started following you`
+      )
 
       return res.status(200).json({
         success: true,

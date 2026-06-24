@@ -188,19 +188,24 @@ export const reactToMood =
               "sender",
               "username profilePic"
             );
-        
+          const sender = await User.findById(req.user);
+          const receiver = await User.findById(mood.user);
+          await sendPush(
+            receiver.fcmToken,
+            `${sender.username} has reacted to your mood`,
+          );
           const io =
             getIO();
 
           if (
             users[
-              mood.user.toString()
+            mood.user.toString()
             ]
           ) {
 
             io.to(
               users[
-                mood.user.toString()
+              mood.user.toString()
               ]
             ).emit(
               "new_notification",
@@ -268,7 +273,7 @@ export const getMoodHistory =
 
   };
 
-  export const getSingleMood =
+export const getSingleMood =
   async (req, res) => {
 
     try {
@@ -318,7 +323,7 @@ export const getMoodHistory =
 
   };
 
-  export const getMoodReactions =
+export const getMoodReactions =
   async (req, res) => {
 
     try {

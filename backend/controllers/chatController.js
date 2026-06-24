@@ -4,7 +4,7 @@ import {
   getIO,
   users
 } from "../socket/socket.js";
-
+import { sendPush } from "../utils/sendnotification.js";
 import User from "../models/Users.js";
 import {
   lastSeen
@@ -221,6 +221,12 @@ export const sendMessage =
         );
 
       }
+      const sender = await User.findById(senderId);
+      const receiver = await User.findById(receiverId);
+      await sendPush(
+        receiver.fcmToken,
+        `${sender.username} has sent a message`
+      );
 
       return res.status(201).json({
         success: true,

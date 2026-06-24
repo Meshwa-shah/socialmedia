@@ -3,6 +3,7 @@ import Status from "../models/Status.js";
 import cloudinary from "../config/cloudinary.js";
 import Notification from "../models/Notification.js";
 import { getIO } from "../socket/socket.js";
+import { sendPush } from "../utils/sendnotification.js";
 
 export const createStatus =
   async (req, res) => {
@@ -365,6 +366,12 @@ export const toggleLikeStatus =
         }
 
       }
+      const sender = await User.findById(userId);
+      const receiver = await User.findById(status.user);
+      await sendPush(
+        receiver.fcmToken,
+        `${sender.username} has liked your story`
+      )
 
       await status.save();
 

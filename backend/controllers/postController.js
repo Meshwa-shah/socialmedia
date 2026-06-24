@@ -3,6 +3,7 @@ import User from "../models/Users.js";
 import cloudinary from "../config/cloudinary.js";
 import { getIO } from "../socket/socket.js";
 import Notification from "../models/Notification.js";
+import { sendPush } from "../utils/sendnotification.js";
 
 export const createPost = async (
   req,
@@ -180,6 +181,13 @@ export const toggleLikePost = async (
         );
       }
     }
+
+    const sender = await User.findById(req.user);
+    const receiver = await User.findById(post.user);
+    await sendPush(
+      receiver.fcmToken,
+      `${sender.username} has liked your post`
+    )
 
     await post.save();
 
@@ -361,6 +369,13 @@ export const addComment = async (
         comment: newComment,
       }
     );
+
+    const sender = await User.findById(userId);
+    const receiver = await User.findById(post.user);
+    await sendPush(
+      receiver.fcmToken,
+      `${sender.username} has commented on your post`
+    )
 
     return res.status(201).json({
       success: true,
