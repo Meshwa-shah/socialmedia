@@ -134,7 +134,6 @@ const ChatRoom = () => {
           setMessages(
             res.data.messages
           );
-          toast.success("message sent");
 
         }
 
@@ -202,7 +201,7 @@ const ChatRoom = () => {
               res.data.message
             ]
           );
-
+          toast.success("message sent");
           setText("");
 
         }
