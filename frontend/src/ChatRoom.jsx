@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import Cookies from "js-cookie";
-
+import {toast} from 'react-toastify';
 import API from "./axios";
 import socket from "./socket/socket";
 import { useNavigate } from "react-router-dom";
@@ -128,12 +128,13 @@ const ChatRoom = () => {
           );
 
         if (
-          res.data.success
+          res.data.success === true
         ) {
 
           setMessages(
             res.data.messages
           );
+          toast.success("message sent");
 
         }
 
