@@ -545,7 +545,7 @@ const ChatRoom = () => {
           disabled={disabled}
         >
 
-          Send
+          {disabled === true ? "sending..." : "send"}
 
         </button>
 
