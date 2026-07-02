@@ -110,5 +110,7 @@ cron.schedule(
 
     }
 
-  }
+  }, {
+  timezone: "Asia/Kolkata"
+}
 );
